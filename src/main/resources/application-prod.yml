@@ -1,0 +1,105 @@
+server:
+  port: 10443
+  profiles: prod
+spring:
+  devtools:
+    restart:
+      enable: true
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 1000MB
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache: false
+  redis:
+    database: 0
+    host: 172.16.1.61
+    port: 6379
+    password:  netmarch
+    timeout: 5000
+#    pool:
+#      max-active: 8  # 连接池最大连接数（使用负值表示没有限制）
+#      max-idle: 8    # 连接池中的最大空闲连接
+#      max-wait: -1   # 连接池最大阻塞等待时间（使用负值表示没有限制）
+#      min-idle: 0    # 连接池中的最小空闲连接
+    ssl: false
+    jedis:
+      pool:
+        max-active: 1000
+        max-idle: 300
+        max-wait: -1
+        min-idle: 300000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 10000
+        max-idle: 8
+        min-idle: 0
+      shutdown-timeout: 100
+  datasource:
+    monitorcenter:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://172.16.1.186:3306/concen?serverTimezone=GMT%2B8
+      username: root
+      password: netmarch
+    configcen:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://172.16.1.186:3306/configcen?serverTimezone=GMT%2B8
+      username: root
+      password: netmarch
+    initialSize: 10
+    # 配置获取连接等待超时的时间   
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒 
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据 
+    useGlobalDataSourceStat: true
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  type-aliases-package: com.netmarch.monitorcente.bean
+log:
+  level: info
+  path: /logs/
+pagehelper:
+  helper-dialect: mysql
+  params: count=countSql
+upload:
+  baseUrl: /netmarch/gz/    #/netmarch/gz/
+redis:
+  host:  172.16.1.61
+  port:  6379
+  password:  netmarch
+  #图表数据显示最近24小时内数据
+  chart:
+    data:
+      period:  24h
+  #redis数据快照最大存放时间(24小时)
+  snapshot:
+    expires:  24h
+snmp:
+  job:
+    cronExpr:  0/30 * * * * ?
+  config:
+    v3User: root
+    password: netmarch
+    privacyDES:  netmarch$2019
+    port: 161
+    trapsPort:  162
+    timeout:  3000
+    maxRetries: 3
+    isSnmp4JLogEnabled:  true
+logging:
+  path: /log/

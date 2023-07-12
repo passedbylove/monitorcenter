@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.ServerGzMapper">
+
+
+    <!-- 公共查询语句 -->
+    <sql id="selectSql">
+        select
+        <trim suffixOverrides=",">
+            a.`id` as 'id',
+            a.`gz_name` as 'name',
+            a.`abbreviate` as 'abbreviate',
+            a.`version` as 'version',
+            a.`create_time` as 'createTime',
+            a.`gz_url` as 'gzUrl',
+            a.`remark` as 'remark',
+            a.`status` as 'status',
+            a.`group_code` as 'groupCode',
+            a.`parent_id` as 'parentId'
+        </trim>
+        from
+        `server_gz` as a
+    </sql>
+
+    <select id="getParentList" parameterType="java.lang.String" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+
+        <include refid="selectSql"/> where 1=1 and parent_id = 0  and group_code = #{code};
+
+    </select>
+    <select id="getChildenList" parameterType="com.netmarch.monitorcenter.query.ServerGzQuery" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+
+        select  a.`id` as 'id',
+            a.`gz_name` as 'alias',
+         concat(a.`abbreviate`,'_',a.`version`) as 'name',
+            a.`abbreviate` as 'abbreviate',
+            a.`version` as 'version',
+            a.`create_time` as 'createTime',
+            a.`gz_url` as 'gzUrl',
+            a.`remark` as 'remark',
+            a.`status` as 'status',
+            a.`group_code` as 'groupCode',
+            a.`parent_id` as 'parentId' from server_gz a   where 1=1 and a.parent_id =  #{id}  and a.group_code = #{code};
+
+    </select>
+    <select id="queryList" parameterType="com.netmarch.monitorcenter.query.ServerGzQuery" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+        <include refid="selectSql"/> where 1=1 and group_code in(
+         select DISTINCT code from groups where type=#{type}
+            <if test="code !=null and code !='' ">
+                and code  = #{code}
+            </if>
+        )
+    </select>
+    <select id="getCodeByType"  parameterType="com.netmarch.monitorcenter.query.ServerGzQuery" resultType="com.netmarch.monitorcenter.bean.Group">
+        select *  from groups where type = #{type}
+        <if test="code !=null and code !='' ">
+            and code  = #{code}
+        </if>
+    </select>
+    <select id="getAllGzWithParent" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+        <include refid="selectSql"/>  order by a.group_code desc
+    </select>
+    <select id="getAllGz" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+        <include refid="selectSql"/> where parent_id != 0 order by a.group_code desc
+    </select>
+    <select id="selectGzById" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+        <include refid="selectSql"/> where a.id = #{id}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.netmarch.monitorcenter.bean.ServerGz">
+        insert into server_gz(gz_name,abbreviate,version,create_time,gz_url,remark,status,group_code,parent_id)values
+        (#{name}, #{abbreviate}, #{version}, #{createTime}, #{gzUrl}, #{remark}, #{status}, #{groupCode}, #{parentId})
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Long">
+
+        delete from server_gz where id = #{id}
+    </delete>
+
+    <delete id="deleteChilden" parameterType="java.lang.Long">
+
+        delete from server_gz where parent_id = #{id}
+    </delete>
+
+
+    <update id="update" parameterType="com.netmarch.monitorcenter.bean.ServerGz">
+        update server_gz set gz_name =#{name},group_code=#{groupCode} ,abbreviate =#{abbreviate},remark =#{remark} where id = #{id}
+    </update>
+
+    <update id="editUpdate">
+        update server_gz set gz_name =#{name} where id = #{id}
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long"  resultType="com.netmarch.monitorcenter.bean.ServerGz">
+        <include refid="selectSql"/> where 1=1 and id = #{id}
+    </select>
+    <select id="getCountChildenById" parameterType="java.lang.Long"  resultType="java.lang.Integer">
+        select count(0) from server_gz where 1=1 and parent_id = #{id}
+    </select>
+    <select id="selectNew" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+         <include refid="selectSql"/> where a.parent_id =  #{parentId}  and a.version > #{version}
+         GROUP BY a.parent_id,a.version ORDER BY a.version DESC;
+    </select>
+    <select id="selectOld" resultType="com.netmarch.monitorcenter.bean.ServerGz">
+         <include refid="selectSql"/> where a.parent_id =  #{parentId}  and a.version <![CDATA[ < ]]> #{version}
+         GROUP BY a.parent_id,a.version ORDER BY a.version DESC;
+    </select>
+
+    <update id="updateStatus"  >
+
+        update server_gz set status =#{status} where id =#{id}
+
+    </update>
+</mapper>

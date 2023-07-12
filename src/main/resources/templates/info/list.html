@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}" media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layer/layer.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+    <script th:src="@{/web/info/info-list.js}"></script>
+
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">服务器信息管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <form class="layui-form layui-form-pane" id="form" th:action="@{/info/list}">
+            <div style="padding: 1px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs12">
+                                        <div class="grid-demo grid-demo-bg1">服务器信息管理</div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="layui-card-body">
+
+                                <div class="layui-tab-item layui-show">
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="90">
+                                            <col width="200">
+                                            <col width="90">
+                                            <col width="200">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                IP地址
+                                            </td>
+                                            <td style="width: 75px">
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="ipAddress" th:value="${param.ipAddress}"
+                                                           autocomplete="off" placeholder="请输入名称" class="layui-input">
+                                                </div>
+                                            </td>
+                                            <td style="width: 90px">服务器状态</td>
+                                            <td >
+                                                <div class="layui-input-inline">
+                                                    <select name="status" id="status">
+                                                        <option value="">查询所有状态</option>
+                                                        <option value="0" th:selected="${param.status == '0'}">正常</option>
+                                                        <option value="1" th:selected="${param.status == '1'}">异常</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td style="width: 90px">所在服务器组</td>
+                                            <td>
+                                                <div class="layui-input-inline" >
+                                                    <select name="groupCode" id="groupCode">
+                                                        <option value="">查询所有服务器组</option>
+                                                        <option th:each="group : ${groups}" th:text="${group.name}" th:value="${group.code}"
+                                                                th:selected="${param.groupCode eq group.code}"></option>
+                                                    </select>
+                                                </div>
+                                            </td>
+
+
+                                            <td align="right">
+                                                <div class="layui-btn-group">
+                                                    <button class="layui-btn layui-btn-sm">查询</button>&nbsp;
+                                                    <button type="button" onclick="customer.add()" class="layui-btn layui-btn-sm">
+                                                        <i class="layui-icon"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                    </table>
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="70">
+                                            <col width="150">
+                                            <col width="100">
+                                            <col width="100">
+                                            <col width="280">
+                                            <col width="50">
+                                            <col width="80">
+                                            <col width="250">
+                                            <col width="100">
+                                            <col width="200">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>IP地址</th>
+                                            <th>端口</th>
+                                            <th>内存</th>
+                                            <th>CPU</th>
+                                            <th>核数</th>
+                                            <th>网卡数</th>
+                                            <th>系统名称</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="info,infoStat : ${list}">
+                                            <td th:text="${infoStat.count}">序号</td>
+                                            <td th:text="${info.ipAddress}">ip</td>
+                                            <td th:text="${info.linkPort}">port</td>
+                                            <td th:text="${info.memory}">内存</td>
+                                            <td th:text="${info.cpuName}">cpu</td>
+                                            <td th:text="${info.cpuTotalCares}">cpuTotalCares</td>
+                                            <td th:text="${info.networkCardNum}">网卡数</td>
+                                            <td th:text="${info.sysName}">系统名称</td>
+                                            <td>
+                                                <span style="color: red" th:if="${info.status == 1}">异常</span>
+                                                <span style="color: green" th:if="${info.status == 0}">正常</span>
+                                            </td>
+                                            <td>
+                                                <a class="layui-btn layui-btn-sm layui-bg-blue" title="修改"
+                                                   th:onclick="'javascript:customer.edit('+${info.id}+')'">
+                                                    修改
+                                                </a>
+                                                <a class="layui-btn layui-btn-sm layui-bg-red" title="删除"
+                                                   th:onclick="'javascript:customer.del('+${info.id}+')'">
+                                                    删除
+                                                </a>
+                                                <a class="layui-btn layui-btn-sm layui-bg-red" title="检查状态"
+                                                   th:onclick="'javascript:customer.checkStatus('+${info.id}+')'">
+                                                    检查
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--分页引用-->
+                                    <div th:replace="pages::pages"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

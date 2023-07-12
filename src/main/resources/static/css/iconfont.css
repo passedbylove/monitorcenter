@@ -1,0 +1,19 @@
+
+@font-face {font-family: "uninstall";
+  src: url('font/uninstall/uninstall.eot?t=1545020907266'); /* IE9*/
+  src: url('font/uninstall/uninstall.eot?t=1545020907266#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAQQAAsAAAAABlQAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY87khpY21hcAAAAYAAAABLAAABcOeftw9nbHlmAAABzAAAAF8AAABgs/AFAGhlYWQAAAIsAAAALwAAADYTmdHSaGhlYQAAAlwAAAAcAAAAJAfeA4NobXR4AAACeAAAAAgAAAAICAAAAGxvY2EAAAKAAAAABgAAAAYAMAAAbWF4cAAAAogAAAAgAAAAIAEPACBuYW1lAAACqAAAAUUAAAJtPlT+fXBvc3QAAAPwAAAAHwAAADDa42aCeJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkYWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByelT8rZ27438AQw9zA0AgUZgTJAQDvxgzSeJxjYGBgZWBgYAZiHSBmYWBgDGFgZAABP6AoI1icmYELLM7CoARWwwISf1b+/z+MBPJZwCQDIxvDKOABkzJQHjisIJiBEQBL9wtFAHicY2BmYPhfz8LA3MDAzsDPIMzAwCjOLs6ozgjCYFKcndGcWbjhpzGj8dt/Z43/3WpgFDb+t/kto6/JA+N/7cYgORNG3bf/Lhv/PdvGKGwCljOWMmZsMGZgAAA6QRyTAHicY2BkYGAA4vM53rvi+W2+MnCzMIDADVu31wj6fz0LA3MDkMvBwAQSBQA0dQqMAHicY2BkYGBu+N/AEMPCAAJAkpEBFTABAEcIAmsEAAAABAAAAAAAAAAAMAAAAAEAAAACABQAAwAAAAAAAgAAAAoACgAAAP8AAAAAAAB4nGWPTU7DMBCFX/oHpBKqqGCH5AViASj9EatuWFRq911036ZOmyqJI8et1ANwHo7ACTgC3IA78EgnmzaWx9+8eWNPANzgBx6O3y33kT1cMjtyDRe4F65TfxBukF+Em2jjVbhF/U3YxzOmwm10YXmD17hi9oR3YQ8dfAjXcI1P4Tr1L+EG+Vu4iTv8CrfQ8erCPuZeV7iNRy/2x1YvnF6p5UHFockikzm/gple75KFrdLqnGtbxCZTg6BfSVOdaVvdU+zXQ+ciFVmTqgmrOkmMyq3Z6tAFG+fyUa8XiR6EJuVYY/62xgKOcQWFJQ6MMUIYZIjK6Og7VWb0r7FDwl57Vj3N53RbFNT/c4UBAvTPXFO6stJ5Ok+BPV8bUnV0K27LnpQ0kV7NSRKyQl7WtlRC6gE2ZVeOEXpc0Yk/KGdI/wAJWm7IAAAAeJxjYGKAAC4G7ICJkYmRmYGtIjO1KjGTgQEAENsCpgA=') format('woff'),
+  url('font/uninstall/uninstall.ttf?t=1545020907266') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('font/uninstall/uninstall.svg?t=1545020907266#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.uninstall {
+  font-family:"uninstall" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-uninstall:before { content: "\e677"; }
+

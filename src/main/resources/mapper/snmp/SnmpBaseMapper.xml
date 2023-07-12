@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.SnmpBaseMapper">
+
+    <insert id="saveLoads" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_load(
+        nodeId
+        ,load1
+        ,load5
+        ,load15
+        ,createTime
+        ,stamp
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nodeId}
+            ,#{item.load1}
+            ,#{item.load5}
+            ,#{item.load15}
+            ,#{item.createTime}
+            ,UNIX_TIMESTAMP(#{item.createTime})
+            )
+        </foreach>
+    </insert>
+
+    <insert id="saveMemoryUsages" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO snmp_memory_usage(
+        nodeId
+        ,memId
+        ,memAvailSwap
+        ,memTotalSwap
+        ,memTotalReal
+        ,memAvailReal
+        ,createTime
+        ,stamp
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nodeId}
+            ,#{item.memId}
+            ,#{item.memAvailSwap}
+            ,#{item.memTotalSwap}
+            ,#{item.memTotalReal}
+            ,#{item.memAvailReal}
+            ,#{item.createTime}
+            ,UNIX_TIMESTAMP(#{item.createTime})
+            )
+        </foreach>
+    </insert>
+    <insert id="saveCPUUsage" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_cpu_usage(
+        nodeId
+        ,ssCpuRawIdle
+        ,ssCpuRawUser
+        ,ssCpuRawWait
+        ,ssCpuRawSystem
+        ,cpuIdle
+        ,cpuUser
+        ,cpuWait
+        ,cpuSys
+        ,createTime
+        ,stamp
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nodeId}
+            ,#{item.ssCpuRawIdle}
+            ,#{item.ssCpuRawUser}
+            ,#{item.ssCpuRawWait}
+            ,#{item.ssCpuRawSystem}
+            ,#{item.cpuIdle}
+            ,#{item.cpuUser}
+            ,#{item.cpuWait}
+            ,#{item.cpuSys}
+            ,#{item.createTime}
+            ,UNIX_TIMESTAMP(#{item.createTime})
+            )
+        </foreach>
+    </insert>
+    <insert id="saveIfCardTraffic" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_ifcard_traffic
+        (
+        nodeId,
+        ifCardId,
+        ifInOctets,
+        ifDownLinkBytes,
+        ifInUcastPkts,
+        ifInNUcastPkts,
+        ifInDiscards,
+        ifInErrors,
+        ifInUnknownProtos,
+        ifOutOctets,
+        ifUpLinkBytes,
+        ifOutUcastPkts,
+        ifOutNUcastPkts,
+        ifOutDiscards,
+        ifOutErrors,
+        ifOutQLen,
+        ifIpAddr,
+        ifIpNetMask,
+        ifAlias,
+        ifAdminStatus,
+        ifOperStatus,
+        ifLastChange,
+        createTime,
+        stamp
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nodeId},
+            #{item.ifCardId},
+            #{item.ifInOctets},
+            #{item.ifDownLinkBytes},
+            #{item.ifInUcastPkts},
+            #{item.ifInNUcastPkts},
+            #{item.ifInDiscards},
+            #{item.ifInErrors},
+            #{item.ifInUnknownProtos},
+            #{item.ifOutOctets},
+            #{item.ifUpLinkBytes},
+            #{item.ifOutUcastPkts},
+            #{item.ifOutNUcastPkts},
+            #{item.ifOutDiscards},
+            #{item.ifOutErrors},
+            #{item.ifOutQLen},
+            #{item.ifIpAddr},
+            #{item.ifIpNetMask},
+            #{item.ifAlias},
+            #{item.ifAdminStatus},
+            #{item.ifOperStatus},
+            #{item.ifLastChange},
+            #{item.createTime},
+            UNIX_TIMESTAMP(#{item.createTime})
+            )
+        </foreach>
+    </insert>
+    <insert id="saveIfCard" keyProperty="id" useGeneratedKeys="true">
+        <!--INSERT INTO snmp_ifcard
+        (
+            `nodeId`,
+            `ifIndex`,
+            `ifDescr`,
+            `ifType`,
+            `ifMtu`,
+            `ifSpeed`,
+            `ifPhysAddress`,
+            `ifIpAddr`,
+            `ifIpNetMask`,
+            `ifOperStatus`,
+            `ifAdminStatus`,
+            `createTime`
+        )
+        VALUES (
+            #{nodeId,jdbcType=BIGINT},
+            #{ifIndex,jdbcType=TINYINT},
+            #{ifDescr,jdbcType=VARCHAR},
+            #{ifType,jdbcType=VARCHAR},
+            #{ifMtu,jdbcType=INTEGER},
+            #{ifSpeed,jdbcType=INTEGER},
+            #{ifPhysAddress,jdbcType=VARCHAR},
+            #{ifIpAddr,jdbcType=VARCHAR},
+            #{ifIpNetMask,jdbcType=VARCHAR},
+            #{ifOperStatus,jdbcType=TINYINT},
+            #{ifAdminStatus,jdbcType=TINYINT},
+            #{createTime,jdbcType=TIMESTAMP}
+            );-->
+        INSERT INTO snmp_ifcard
+        (`nodeId`, `ifIndex`, `ifDescr`, `ifType`, `ifMtu`, `ifSpeed`, `ifPhysAddress`, `ifIpAddr`, `ifIpNetMask`, `ifOperStatus`, `ifAdminStatus`, `createTime`)
+        VALUES
+        (#{nodeId}, #{ifIndex}, #{ifDescr}, #{ifType}, #{ifMtu}, #{ifSpeed}, #{ifPhysAddress}, #{ifIpAddr}, #{ifIpNetMask}, #{ifOperStatus}, #{ifAdminStatus}, #{createTime});
+    </insert>
+    <insert id="saveFileSystem" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO snmp_filesystem
+        (nodeId,
+        hrStorageIndex,
+        hrStorageType,
+        hrStorageDescr,
+        hrStorageAllocationUnits,
+        hrStorageSize,
+        createTime
+        )
+        VALUES (
+        #{nodeId},
+        #{hrStorageIndex},
+        #{hrStorageType},
+        #{hrStorageDescr},
+        #{hrStorageAllocationUnits},
+        #{hrStorageSize},
+        #{createTime}
+        );
+    </insert>
+    <insert id="saveIfCards" keyProperty="id" useGeneratedKeys="true">
+        insert INTO snmp_ifcard
+        (
+        nodeId,
+        ifIndex,
+        ifDescr,
+        ifType,
+        ifMtu,
+        ifSpeed,
+        ifPhysAddress,
+        ifIpAddr,
+        ifIpNetMask,
+        ifOperStatus,
+        ifAdminStatus,
+        createTime,
+        lastUpdateTime
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nodeId},
+            #{item.ifIndex},
+            #{item.ifDescr},
+            #{item.ifType},
+            #{item.ifMtu},
+            #{item.ifSpeed},
+            #{item.ifPhysAddress},
+            #{item.ifIpAddr},
+            #{item.ifIpNetMask},
+            #{item.ifOperStatus},
+            #{item.ifAdminStatus},
+            #{item.createTime},
+            #{item.lastUpdateTime}
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryFileSystemUsage" resultType="com.netmarch.monitorcenter.bean.SnmpFileSystemUsage">
+        select * from snmp_filesystem_usage
+        where  1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="fsId != null">
+            and fsId = #{fsId}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        order by id,createTime
+    </select>
+    <insert id="saveFileSystemUsages" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_filesystem_usage
+        (nodeId,
+        fsId,
+        hrStorageIndex,
+        hrStorageType,
+        hrStorageDescr,
+        hrStorageAllocationUnits,
+        hrStorageSize,
+        hrStorageUsed,
+        createTime,
+        stamp
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nodeId},
+            #{item.fsId},
+            #{item.hrStorageIndex},
+            #{item.hrStorageType},
+            #{item.hrStorageDescr},
+            #{item.hrStorageAllocationUnits},
+            #{item.hrStorageSize},
+            #{item.hrStorageUsed},
+            #{item.createTime},
+            UNIX_TIMESTAMP(#{item.createTime})
+            )
+        </foreach>
+    </insert>
+    <insert id="saveFileSystems" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_filesystem
+        (nodeId,
+        hrStorageIndex,
+        hrStorageType,
+        hrStorageDescr,
+        hrStorageAllocationUnits,
+        hrStorageSize,
+        createTime
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nodeId},
+            #{item.hrStorageIndex},
+            #{item.hrStorageType},
+            #{item.hrStorageDescr},
+            #{item.hrStorageAllocationUnits},
+            #{item.hrStorageSize},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+    <insert id="saveMemory" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_memory
+        (nodeId, memTotalSwap, memTotalReal, createTime)
+        VALUES (#{nodeId}, #{memTotalSwap}, #{memTotalReal}, #{createTime});
+    </insert>
+    <insert id="saveMemories" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO snmp_memory
+        (nodeId, memTotalSwap, memTotalReal, createTime)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.nodeId}, #{item.memTotalSwap}, #{item.memTotalReal}, #{item.createTime})
+        </foreach>
+    </insert>
+
+
+    <update id="saveJobState">
+        REPLACE INTO snmp_job_state(id,`name`,`value`)
+        values
+        <foreach collection="state.keys" item="key" open="(" close=")" separator=",">
+            (#{id},#{key},#{state[${key}])
+        </foreach>
+    </update>
+    <update id="updateIfCard">
+        UPDATE snmp_ifcard
+              SET ifIndex = #{ifIndex},
+              ifDescr = #{ifDescr},
+              ifType = #{ifType},
+              ifMtu = #{ifMtu},
+              ifSpeed = #{ifSpeed},
+              ifIpAddr = #{ifIpAddr},
+              ifIpNetMask = #{ifIpNetMask},
+              ifOperStatus = #{ifOperStatus},
+              ifAdminStatus = #{ifAdminStatus},
+              lastUpdateTime = #{lastUpdateTime}
+        WHERE
+            id = #{id} and ifPhysAddress = #{ifPhysAddress}
+    </update>
+
+    <update id="updateFileSystem">
+      update snmp_filesystem
+      set hrStorageIndex = #{hrStorageIndex},
+      hrStorageType = #{hrStorageType},
+      hrStorageAllocationUnits = #{hrStorageAllocationUnits},
+      hrStorageSize = #{hrStorageSize},
+      lastUpdateTime = #{lastUpdateTime}
+      where nodeId = #{nodeId} and hrStorageDescr = #{hrStorageDescr}
+    </update>
+
+    <update id="updateIfCards">
+        <foreach collection="list" item="item" index="index" separator=";">
+            UPDATE snmp_ifcard
+            SET ifIndex = #{item.ifIndex},
+            ifDescr = #{item.ifDescr},
+            ifType = #{item.ifType},
+            ifMtu = #{item.ifMtu},
+            ifSpeed = #{item.ifSpeed},
+            ifIpAddr = #{item.ifIpAddr},
+            ifIpNetMask = #{item.ifIpNetMask},
+            ifOperStatus = #{item.ifOperStatus},
+            ifAdminStatus = #{item.ifAdminStatus},
+            lastUpdateTime = #{item.lastUpdateTime}
+            WHERE
+            <!--id = #{item.id} and -->ifPhysAddress = #{item.ifPhysAddress}
+        </foreach>
+    </update>
+
+    <update id="updateMemory">
+        UPDATE snmp_memory
+        set memTotalSwap = #{memTotalSwap}, memTotalReal = #{memTotalReal},lastUpdateTime = #{lastUpdateTime}
+        where nodeId = #{nodeId}
+    </update>
+    <update id="updateMemories">
+        <foreach collection="list" item="item" index="index" separator=";">
+            UPDATE snmp_memory
+            set memTotalSwap = #{item.memTotalSwap}, memTotalReal = #{item.memTotalReal},lastUpdateTime = #{item.lastUpdateTime}
+            where nodeId = #{nodeId};
+        </foreach>
+    </update>
+    <update id="updateFileSystems">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update snmp_filesystem
+            set hrStorageIndex = #{item.hrStorageIndex},
+            hrStorageType = #{item.hrStorageType},
+            hrStorageAllocationUnits = #{item.hrStorageAllocationUnits},
+            hrStorageSize = #{item.hrStorageSize},
+            lastUpdateTime = #{item.lastUpdateTime}
+            where nodeId = #{item.nodeId} and hrStorageDescr = '${item.hrStorageDescr}';
+        </foreach>
+    </update>
+
+
+    <select id="queryIfCard" resultType="com.netmarch.monitorcenter.bean.SnmpIfCard">
+        select * from snmp_ifcard order by id
+    </select>
+
+    <select id="loadJobState" resultType="com.netmarch.monitorcenter.bean.SnmpJobState">
+        select * from snmp_job_state
+    </select>
+
+    <select id="queryMemoryUsage" resultType="com.netmarch.monitorcenter.bean.SnmpMemoryUsage">
+        select * from snmp_memory_usage where  1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="memId != null">
+            and memId = #{memId}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        order by id,createTime
+    </select>
+
+    <select id="queryMemory" resultType="com.netmarch.monitorcenter.bean.SnmpMemory">
+        select * from snmp_memory where 1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="queryIfCardTraffic" resultType="com.netmarch.monitorcenter.bean.SnmpIfCardTraffic">
+        select * from snmp_ifcard_traffic where 1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        order by id,createTime
+    </select>
+
+    <select id="getMemoryById" resultType="com.netmarch.monitorcenter.bean.SnmpMemory">
+        select * from snmp_memory where id = #{id};
+    </select>
+
+    <select id="queryNode" resultType="com.netmarch.monitorcenter.bean.SnmpNode">
+        select * from snmp_node
+    </select>
+    <select id="queryCPUUsage" resultType="com.netmarch.monitorcenter.bean.SnmpCPUUsage">
+        select * from snmp_cpu_usage where  1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="cpuId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        order by id,createTime
+    </select>
+    <select id="getMemoryByNode" resultType="com.netmarch.monitorcenter.bean.SnmpMemory">
+        select * from snmp_memory where nodeId = #{nodeId}
+    </select>
+    <select id="queryIfCardByNode" resultType="com.netmarch.monitorcenter.bean.SnmpIfCard">
+        select * from snmp_ifcard where nodeId = #{nodeId}
+    </select>
+    <select id="getIfCardById" resultType="com.netmarch.monitorcenter.bean.SnmpIfCard">
+        select * from snmp_ifcard where id = #{id}
+    </select>
+    <select id="queryFileSystem" resultType="com.netmarch.monitorcenter.bean.SnmpFileSystem">
+        select * from snmp_filesystem  where  1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+    <select id="getFileSystemById" resultType="com.netmarch.monitorcenter.bean.SnmpFileSystem">
+        select * from snmp_filesystem  where id = #{id}
+    </select>
+    <!--<select id="queryFileSystemByNode" resultType="com.netmarch.monitorcenter.bean.SnmpFileSystem">-->
+        <!--select * from snmp_filesystem  where nodeId = #{nodeId}-->
+    <!--</select>-->
+
+    <select id="queryLoad" resultType="com.netmarch.monitorcenter.bean.SnmpLoad">
+        select * from snmp_load  where  1 = 1
+        <if test="nodeId != null">
+            and nodeId = #{nodeId}
+        </if>
+        <if test="startTime != null and endTime != null">
+            and createTime between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        order by id
+    </select>
+    <!--<select id="queryMemoryUsageByNode" resultType="com.netmarch.monitorcenter.bean.SnmpMemoryUsage">-->
+        <!--select * from snmp_filesystem_usage where nodeId= #{nodeId}-->
+    <!--</select>-->
+    <!--<select id="queryMemoryUsageByMemId" resultType="com.netmarch.monitorcenter.bean.SnmpMemoryUsage">-->
+        <!--select * from snmp_filesystem_usage where memId = #{memId}-->
+    <!--</select>-->
+</mapper>
+

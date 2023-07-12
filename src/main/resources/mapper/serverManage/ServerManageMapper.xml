@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.ServerManageMapper">
+    <select id="selectDeployAndGzAndInfoByDeployId" resultType="com.netmarch.monitorcenter.bean.ServerManage">
+        SELECT
+			deploy.deploy_path deployUrl,
+			deploy.server_port deployPort,
+			deploy.run_status runStatus,
+			gz.gz_url gzUrl,
+			info.user_name username,
+			info.pwd password,
+			info.link_port linkPort,
+			info.ip_address ipAddress
+		FROM
+			( SELECT gz_id,server_port, server_id, deploy_path, run_status FROM server_deploy WHERE id = #{id}) AS deploy
+			LEFT JOIN server_gz gz ON deploy.gz_id = gz.id
+			LEFT JOIN server_info info ON info.id = deploy.server_id;
+    </select>
+</mapper>
+        <!-- @Author : Administrator-->
+        <!-- @Date : 2018/12/29 --> 

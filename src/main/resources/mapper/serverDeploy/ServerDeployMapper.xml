@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.ServerDeployMapper">
+    <resultMap id="BaseResultMap" type="com.netmarch.monitorcenter.bean.ServerDeploy" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="server_id" property="serverId" jdbcType="VARCHAR" />
+        <result column="server_ip" property="serverIp" jdbcType="VARCHAR" />
+        <result column="server_port" property="serverPort" jdbcType="INTEGER" />
+        <result column="deploy_path" property="deployPath" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="deploy_time" property="deployTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="gz_id" property="gzId" jdbcType="INTEGER" />
+        <result column="server_name" property="serverName" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultMapExpand" type="com.netmarch.monitorcenter.bean.ServerDeploy" extends="BaseResultMap">
+        <association property="serverInfo" javaType="com.netmarch.monitorcenter.bean.ServerInfo">
+            <result column="server_info_sys_name" property="sysName" jdbcType="VARCHAR" />
+            <result column="server_info_link_port" property="linkPort" jdbcType="VARCHAR" />
+        </association>
+        <association property="serverGz" javaType="com.netmarch.monitorcenter.bean.ServerGz">
+            <result column="server_gz_name" property="name" jdbcType="VARCHAR" />
+            <result column="server_gz_abbreviate" property="abbreviate" jdbcType="VARCHAR" />
+            <result column="server_gz_version" property="version" jdbcType="VARCHAR" />
+            <result column="server_gz_group_code" property="groupCode" jdbcType="VARCHAR" />
+            <result column="server_gz_parent_id" property="parentId" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+<sql id="Base_Column_List" >
+id, server_id, server_ip,server_port, version, create_time, deploy_time, status, gz_id, server_name
+</sql>
+    <sql id="Pre_Base_Column_List" >
+    server_deploy.id, server_deploy.server_id, server_deploy.server_ip,server_deploy.server_port,
+    server_deploy.deploy_path,
+    server_deploy.version, server_deploy.create_time, server_deploy.deploy_time,
+    server_deploy.status, server_deploy.gz_id, server_deploy.server_name
+</sql>
+    <select id="selectRelationByExample" parameterType="tk.mybatis.mapper.entity.Example" resultMap="BaseResultMapExpand">
+        select <include refid="Pre_Base_Column_List" />
+        ,server_info.sys_name as server_info_sys_name
+        ,server_info.link_port as server_info_link_port
+        ,server_gz.gz_name as server_gz_name
+        ,server_gz.abbreviate as server_gz_abbreviate
+        ,server_gz.version as server_gz_version
+        ,server_gz.group_code as server_gz_group_code
+        ,server_gz.parent_id as server_gz_parent_id
+        from (
+        select * from server_deploy
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        ) server_deploy
+        left join server_info on server_info.ip_address = server_deploy.server_ip
+        left join server_gz on server_gz.id = server_deploy.gz_id
+    </select>
+    <select id="listServerDeploysByNameAndIp" resultType="com.netmarch.monitorcenter.bean.ServerDeploy">
+        SELECT * FROM server_deploy WHERE 1 = 1
+        <if test="serverName!=null and serverName!=''">
+            AND server_name LIKE CONCAT('%',#{serverName},'%')
+        </if>
+        <if test="serverIp!=null and serverIp!=''">
+            AND server_ip LIKE CONCAT('%',#{serverIp},'%')
+        </if>
+    </select>
+</mapper>

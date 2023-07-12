@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>总控中心</title>
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}"  media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layer/layer.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+
+    <![endif]-->
+    <script type="text/javascript">
+        //为了保证不出现一闪而过的菜单栏, 放在了前面进行加载这段代码
+        $().ready(() => {
+            var a = $('.dynamic-navigation');
+        localStorage.getItem('nav-status') == 1 ? (
+            $('.dynamic-navigation').attr("tg", "1").css('left', '-200px'),
+                $('.layui-layer-tips').css('left', '89px')
+        ) : (
+            console.log(localStorage.getItem('nav-status'))
+        );
+
+        });
+    </script>
+
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function(){
+            var element = layui.element;
+
+        });
+        var tbyoung = {
+            index:null,
+            returnURL:function(url){
+                return /*[[@{*/url/*}]]*/;
+            },
+            ifram_src_add:function(url){
+                document.getElementById("iframe").src=tbyoung.returnURL(url);
+            },
+            setHeight:function(iframe) {
+                //设置iframe自适应高度
+                $(iframe).height($(window).height() - $(".layui-footer").height() - $(".layui-header").height() -5)
+            },
+            login_out:function(){
+                index = layer.confirm('是否退出系统?', {icon: 3, title:'提示'}, function(index){
+                    location.href = tbyoung.returnURL("index");
+                    layer.close(index);
+                });
+            }
+        };
+
+
+    </script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+
+        <div class="layui-logo">
+            <img th:src="@{/style/1.png}" class="layui-nav-img">
+            总控中心
+
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item">
+                <div class="main dynamic-navigation">
+                    <button class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-app" title="显示隐藏菜单"></i>  </button>
+                    <div id="view1"></div>
+                </div>
+            </li>
+
+        </ul>
+
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;" th:text="${users.name}">
+                    超级管理员
+                </a>
+                <dl class="layui-nav-child">
+                  <!--  <dd><a onclick="tbyoung.ifram_src_add('/updateusers')">个人资料</a></dd>-->
+                    <dd><a href="javascript:;" onclick="tbyoung.ifram_src_add('pages?pages=system/password')">修改密码</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a onclick="tbyoung.login_out()">退出系统</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black dynamic-navigation" style="position: fixed; ">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test" >
+                <li th:each="mu : ${mu}" th:class="'layui-nav-item '+${mu.display}">
+                    <a th:if="${mu.murl} != ''" th:class="'layui-icon '+${mu.css}" th:text="${mu.name}"  th:onclick="tbyoung.ifram_src_add([[${mu.murl}]])">首页</a>
+                    <a th:if="${mu.murl} == ''" th:class="'layui-icon '+${mu.css}" th:text="${mu.name}">首页</a>
+                    <dl th:if="${mu.murl} == ''" class="layui-nav-child">
+                        <dd th:each="mu1 : ${mu1}" th:if="${mu1.pid} == ${mu.id}"><a th:onclick="tbyoung.ifram_src_add([[${mu1.murl}]])" th:text="${mu1.name}">列表一</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body main dynamic-navigation" style=" margin-left: 200px;position: absolute;left: 0px;" tg="1">
+        <!-- 内容主体区域 -->
+        <iframe id="iframe" onload="tbyoung.setHeight(this)" th:src="@{/indexs}" style="min-height:50px; height:100%;" width="100%" scrolling="yes" frameborder="0"></iframe>
+    </div>
+
+    <div class="layui-footer main dynamic-navigation" style="margin-left: 200px;position: absolute;left: 0px;" tg="1">
+        <!-- 底部固定区域 -->
+        <p>© 2018 版权网进科技 技术支持：视频云技术小组</p>
+    </div>
+
+</div>
+<script type="text/javascript">
+    layui.use(['element', 'layer'], () => {
+        var element = layui.element;
+    element.init();
+
+    $('body').on('click', '.main>button', () => {
+        var a = $('.dynamic-navigation');
+    var b = $('.layui-layer-tips');
+    a && (a.attr("tg") ? (a.animate({
+        left: 0,
+        opacity: "show"
+    }, 500), a.removeAttr("tg"), b.animate({
+        left: 289,
+        opacity: "show"
+    }, 500)) : (a.animate({
+        left: -200,
+        opacity: "show"
+    }, 500), a.attr("tg", "1"), b.animate({
+        left: 89,
+        opacity: "show"
+    }, 500)));
+
+    a && (a.attr("tg") ? (
+        localStorage.setItem('nav-status', 1)
+    ) : (
+        localStorage.setItem('nav-status', 0)
+    ));
+
+    });
+
+
+
+    })
+</script>
+
+</body>
+</html>

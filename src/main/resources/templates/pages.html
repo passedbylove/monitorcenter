@@ -1,0 +1,34 @@
+<div th:fragment="pages" xmlns:th="http://schemas.xmlsoap.org/wsdl/">
+<div id="divPage" style="text-align: center;"></div>
+<input type="hidden" id="pageSize" th:value="${list.pageSize}"/>
+<input type="hidden" id="pageNum" th:value="${list.pageNum}"/>
+<input type="hidden" id="total" th:value="${list.total}"/>
+<input type="hidden" id="pageNo" name="pageNo" th:value="${list.pageNum}"/>
+<script>
+
+    $(document).ready(function () {
+        initPageControl($("#pageNum").val(), $("#total").val(),$("#pageSize").val());
+        $("#divPage").show();
+    });
+    //分页插件
+    function initPageControl(currentPage, dataCount,pageSize) {
+        layui.use('laypage', function () {
+            var laypage = layui.laypage;
+            laypage.render({
+                elem: 'divPage'
+                , count: dataCount //数据总数，从服务端得到
+                , curr: currentPage || 1
+                , limit:pageSize
+                , layout: ['count', 'prev', 'page', 'next', 'skip']
+                , jump: function (obj, first) {
+                    if (!first) {
+                        $("#pageNo").val(obj.curr);
+                        $("#form").submit();
+                    }
+                }
+            });
+        });
+
+    }
+</script>
+</div>

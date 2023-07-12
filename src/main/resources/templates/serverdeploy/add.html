@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>服务部署-新增</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}"  media="all">
+    <link rel="stylesheet" th:href="@{/css/iconfont.css?t=1525771196163}"  media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/bootstrap-3.3.7/dist/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <script th:src="@{/moment/moment.min.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+    <style type="text/css">
+        .service-additional{
+        }
+    </style>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">服务部署</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div style="padding: 1px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">新增服务部署(<b>备注：带有<span style="color: red">*</span>号为必填项</b>)</div>
+                        <div class="layui-card-body">
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form layui-form-pane" id="form" method="post" th:action="@{/server/add}">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>服务名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="serverName" required lay-verify="required" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>服务器</label>
+                                        <div class="layui-input-block">
+                                            <select name="serverId">
+                                                <option th:each="item,stat : ${serverInfos}" th:value="${item.id}"
+                                                        th:text="${item.ipAddress+':'+item.linkPort+'-'+item.sysName}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>安装包</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="gzId" name="gzId"  lay-verify="required" lay-filter="gzId" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>部署路径</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="deployPath" name="deployPath"  lay-verify="checkFilePath" lay-filter="deployPath" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">部署脚本</label>
+                                        <div class="layui-input-block">
+                                            <select name="deployScriptId">
+                                                <option value="" text=""></option>
+                                                <option th:each="item,stat : ${serverScripts}" th:value="${item.id}"
+                                                        th:text="${item.scriptName+'  备注:'+item.remark}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">卸载脚本</label>
+                                        <div class="layui-input-block">
+                                            <select name="uninstallScriptId">
+                                                <option value="" text=""></option>
+                                                <option th:each="item,stat : ${serverScripts}" th:value="${item.id}"
+                                                        th:text="${item.scriptName+'   备注:'+item.remark}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <span> 注意：服务端口，启动脚本和停止脚本，只有[服务安装包]才可以配置。启动脚本和停止脚本，会将不带后缀的包名和端口号作为参数传入脚本。例如：./sys-default-start monitorcenter 8080</span>
+                                        <hr class="layui-bg-green">
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>服务端口</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="serverPort" name="serverPort"  lay-verify="asyCheckServerPort" lay-filter="serverPort" class="layui-input service-additional">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">启动脚本</label>
+                                        <div class="layui-input-block">
+                                            <select name="startScriptId" class="service-additional">
+                                                <option value="" text=""></option>
+                                                <option th:each="item,stat : ${serverScripts}" th:value="${item.id}"
+                                                        th:text="${item.scriptName+'    备注:'+item.remark}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">停止脚本</label>
+                                        <div class="layui-input-block">
+                                            <select name="stopScriptId" class="service-additional">
+                                                <option value="" text=""></option>
+                                                <option th:each="item,stat : ${serverScripts}" th:value="${item.id}"
+                                                        th:text="${item.scriptName+'   备注:'+item.remark}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button class="layui-btn" lay-submit lay-filter="server_deploy">部署</button>
+                                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        <button type="button" class="layui-btn layui-btn-primary" onclick="javascript:location.href='/server/tolist'">返回</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/web/module/common.js}" charset="utf-8"></script>
+<script th:src="@{/web/serverdeploy/add.js}"></script>
+</html>

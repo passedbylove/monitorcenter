@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.SnmpMemoryMapper">
+    <insert id="saveUsages" parameterType="com.netmarch.monitorcenter.bean.SnmpMemoryUsage">
+        INSERT INTO snmp_memory_usage(
+            nodeId
+            ,memAvailSwap
+            ,memTotalSwap
+            ,memTotalReal
+            ,memAvailReal
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.nodeId}
+            ,#{item.memAvailSwap}
+            ,#{item.memTotalSwap}
+            ,#{item.memTotalReal}
+            ,#{item.memAvailReal}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getByNode" resultType="com.netmarch.monitorcenter.bean.SnmpMemory">
+        select * from snmp_node where 1=1
+    </select>
+</mapper>

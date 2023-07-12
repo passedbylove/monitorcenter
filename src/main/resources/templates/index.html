@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>总控中心</title>
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}"  media="all">
+    <link rel="stylesheet" th:href="@{/style/admin.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/style/login.css}"  media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <script th:src="@{/web/index/index.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+
+
+</head>
+<body>
+
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+    <form class="layui-form" id="form">
+        <div class="layadmin-user-login-main">
+            <div class="layadmin-user-login-box layadmin-user-login-header">
+                <h2>MONITOR CENTER</h2>
+                <p>总控中心</p>
+            </div>
+            <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+                <div class="layui-form-item">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="code"></label>
+                    <input type="text" name="code" id="code" placeholder="用户名" value="admin" class="layui-input">
+                </div>
+                <div class="layui-form-item">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="password"></label>
+                    <input type="password" name="password" id="password" placeholder="密码" value="netmarch" class="layui-input">
+                </div>
+
+                <div class="layui-form-item">
+                    <button type="button" class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit" onclick="Login.submit()">登 入</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+    <div class="layui-trans layadmin-user-login-footer">
+
+        <p>© 2018 版权网进科技</p>
+        <p>
+            <span><a href="#" target="_blank">技术支持：视频云技术小组</a></span>
+        </p>
+    </div>
+
+
+
+</div>
+
+
+</body>
+</html>

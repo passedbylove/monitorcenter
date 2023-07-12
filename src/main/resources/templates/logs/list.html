@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}"  media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <![endif]-->
+
+    <script th:src="@{/web/logs/logs.js}" charset="utf-8"></script>
+    <link rel="stylesheet" th:href="@{/web/logs/logs.css}"  media="all">
+
+
+</head>
+<body>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">日志管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <form class="layui-form layui-form-pane" id="form" th:action="@{/logs/list}" th:object="${param}">
+
+            <input type="hidden"  id ="startTimeQuery"  th:value="${logsQuery.startTime}" placeholder="yyyy-MM-dd HH:mm:ss" >
+            <input type="hidden"  id ="endTimeQuery"  th:value="${logsQuery.endTime}" placeholder="yyyy-MM-dd HH:mm:ss" >
+            <input type="hidden"  id ="flag"  name = "flag" th:value="false" >
+
+            <div style="padding: 1px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <!--<div class="layui-card-header">-->
+
+                            <!--</div>-->
+                            <div class="layui-card-body">
+
+                                <div class="layui-tab-item layui-show">
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="150">
+                                            <col width="200">
+                                            <col width="50">
+                                            <col width="200">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                执行时间筛选：从
+                                            </td>
+                                            <td>
+                                                 <input type="text" class="layui-input date-item" id="startTime" th:value="${logsQuery.startTime}" readonly="readonly" name ="startTime" placeholder="yyyy-MM-dd HH:mm:ss" lay-key="23">
+                                            </td>
+                                            <td> 到 </td>
+                                            <td>
+                                                <input type="text" class="layui-input date-item" id="endTime" th:value="${logsQuery.endTime}" readonly="readonly"  name ="endTime" placeholder="yyyy-MM-dd HH:mm:ss" lay-key="24">
+
+                                            </td>
+                                            <td align="right">
+                                                <div class="layui-btn-group">
+                                                    <button class="layui-btn layui-btn-sm">查询</button>&nbsp;
+                                            <!--        <button type="button" onclick="customer.targer_url('/group/add')"
+                                                            class="layui-btn layui-btn-sm">
+                                                        &lt;!&ndash;<i class="layui-icon"></i>&ndash;&gt;
+                                                        添加
+                                                    </button>-->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                    </table>
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="5%">
+                                            <col width="10%">
+                                            <col width="10%">
+                                            <col width="20%">
+                                            <col width="20%">
+                                            <col width="15%">
+                                            <col width="10%">
+                                            <col width="10%">
+
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>操作模块</th>
+                                            <th>操作动作</th>
+                                            <th>操作内容</th>
+                                            <th>操作结果</th>
+                                            <th>执行时间</th>
+                                            <th>执行IP</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr  th:each="logs,logsStat : ${list.result}" >
+                                            <td th:text="${logsStat.count}">1</td>
+                                            <td th:text="${logs.module}">操作模块</td>
+                                            <td th:text="${logs.action}">操作动作</td>
+                                            <td th:text="${logs.detail}">操作内容</td>
+                                            <td th:text="${logs.result}">操作结果</td>
+                                            <td th:text="${#dates.format(logs.executeTime,'yyyy-MM-dd HH:mm:ss')}">2018-09-01</td>
+                                            <td th:text="${logs.ip}">操作IP</td>
+                                            <td>
+                                                <a class="layui-btn layui-btn-sm layui-bg-blue" title="查看"
+                                                   th:onclick="'javascript:customer.check('+${logs.id}+')'">
+                                                    <!--<i class="layui-icon">&#xe667;</i>-->
+                                                    查看
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--分页引用-->
+                                    <div th:replace="pages::pages"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+
+</html>

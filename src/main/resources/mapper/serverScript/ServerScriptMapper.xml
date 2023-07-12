@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.ServerScriptMapper">
+
+
+    <select id="selectByCondition" resultType="com.netmarch.monitorcenter.bean.ServerScript">
+        select sers.id,sers.script_name,sers.script_url,sers.group_id,sers.create_time,sers.remark,gr.name groupName
+            from server_script sers left join groups gr
+            on gr.code = sers.group_id
+          <where>
+              <if test="groupId != null and groupId != ''">
+                  and sers.group_id = #{groupId}
+              </if>
+              <if test="scriptName != null and scriptName != ''">
+                  and sers.script_name like concat('%',#{scriptName},'%')
+              </if>
+          </where>
+        order by sers.group_id desc,sers.id desc
+    </select>
+</mapper>

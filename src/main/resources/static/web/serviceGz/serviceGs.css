@@ -1,0 +1,16 @@
+#catalogTable{
+    table-layout:fixed
+}
+#catalogTable td {
+    white-space:nowrap;overflow:hidden;text-overflow: ellipsis;
+}
+#detail{
+    table-layout:fixed;
+    width:100%;
+}
+#detail td {
+    white-space:nowrap;overflow:hidden;text-overflow: ellipsis;
+}
+#cz {
+    text-align:center;
+}

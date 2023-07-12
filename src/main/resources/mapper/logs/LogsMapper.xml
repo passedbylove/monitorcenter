@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.LogsMapper">
+
+    <select id="logsQuery" parameterType="com.netmarch.monitorcenter.query.LogsQuery" resultType="com.netmarch.monitorcenter.bean.Logs">
+        select id,module, action,result,detail,execute_time as executeTime,ip  from logs where 1 = 1
+        <if test="startTime != null and  startTime!='' ">
+            <![CDATA[ and DATE_FORMAT(execute_time, '%Y-%m-%d') >= #{startTime} ]]>
+        </if>
+        <if test="endTime != null and   endTime!=''">
+            <![CDATA[  and DATE_FORMAT(execute_time, '%Y-%m-%d') <= #{endTime} ]]>
+        </if>
+        order by execute_time desc
+    </select>
+
+    <insert id="logsSave" parameterType="com.netmarch.monitorcenter.bean.Logs">
+        insert into logs(module, action,result,detail,execute_time,ip)
+        VALUES
+        (#{module}, #{action}, #{result}, #{detail}, #{executeTime}, #{ip})
+    </insert>
+
+
+
+    <select id="queryById" parameterType="java.lang.Long" resultType="com.netmarch.monitorcenter.bean.Logs">
+        select id, module, action,result,detail,execute_time as executeTime,ip  from logs where 1 = 1 and id = #{id}
+
+    </select>
+
+</mapper>

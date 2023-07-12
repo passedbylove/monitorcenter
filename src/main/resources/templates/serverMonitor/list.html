@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}" media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/bootstrap-3.3.7/dist/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+    <script th:src="@{/web/serverMonitor/list.js}" charset="utf-8"></script>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">服务监控</li>
+    </ul>
+    <div class="layui-tab-content">
+        <form class="layui-form layui-form-pane" id="form" th:action="@{/serverMonitor/list}" th:object="${param}">
+
+            <div style="padding: 1px; background-color: #F2F2F2;">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs12">
+                                        <div class="grid-demo grid-demo-bg1">服务监控</div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="layui-card-body">
+
+                                <div class="layui-tab-item layui-show">
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="90">
+                                            <col width="200">
+                                            <col width="100">
+                                            <col width="200">
+                                            <col >
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <td>
+                                                服务名称
+                                            </td>
+                                            <td>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="serverName" th:value="*{serverName}"
+                                                           autocomplete="off" placeholder="请输入服务名称" class="layui-input">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                服务IP
+                                            </td>
+                                            <td>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" name="serverIp" th:value="*{serverIp}"
+                                                           autocomplete="off" placeholder="请输入服务IP" class="layui-input">
+                                                </div>
+                                            </td>
+                                            <td align="right">
+                                                <div class="layui-btn-group">
+                                                    <button class="layui-btn layui-btn-sm">查询</button>&nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </thead>
+                                    </table>
+
+                                    <table class="layui-table" lay-skin="line">
+                                        <colgroup>
+                                            <col width="100">
+                                            <col width="200">
+                                            <col width="200">
+                                            <col width="300">
+                                            <col width="150">
+                                            <col width="200">
+                                            <col width="200">
+                                        </colgroup>
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>服务名称</th>
+                                            <th>服务IP地址</th>
+                                            <th>服务器名称</th>
+                                            <th>安装包名称(缩写)</th>
+                                            <th>创建时间</th>
+                                            <th>部署时间</th>
+                                            <th>运行状态</th>
+                                            <th>检查状态</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="server,serverStat : ${list.data}">
+                                            <td th:text="${serverStat.count}"></td>
+                                            <td th:text="${server.serverName}"></td>
+                                            <td th:text="${server.serverIp}"></td>
+                                            <td th:if="${server.serverInfo != null}" th:text="${server.serverInfo.sysName}"></td>
+                                            <td th:if="${server.serverInfo == null}"></td>
+                                            <td th:if="${server.serverGz != null}" th:text="${server.serverGz.abbreviate}"></td>
+                                            <td th:if="${server.serverGz == null}"></td>
+                                            <td th:text="${#dates.format(server.createTime, 'yyyy-MM-dd hh:mm:ss')}"></td>
+                                            <td th:text="${#dates.format(server.deployTime, 'yyyy-MM-dd hh:mm:ss')}"></td>
+                                            <td th:if="${server.status == 1}" style="color: #00B83F">运行中</td>
+                                            <td th:if="${server.status != 1}" style="color: gray">未运行</td>
+                                            <td>
+                                                <a class="layui-btn layui-btn-sm layui-bg-red" title="检查状态"
+                                                   th:onclick="'javascript:customer.checkStatus(this)'">
+                                                    <!--<i class="layui-icon">&#xe62c;</i>-->
+                                                    检查
+                                                </a>
+                                                <input hidden="hidden" th:value="${server.serverId}"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--分页引用-->
+                                    <div th:replace="pages::pages"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

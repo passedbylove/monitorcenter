@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.GroupMapper">
+    <select id="listGroupsByType" parameterType="string" resultType="com.netmarch.monitorcenter.bean.Group">
+        SELECT * FROM GROUPS where 1 = 1
+        <if test="type!=null and type!=''">
+            AND type = #{type}
+        </if>
+    </select>
+
+    <select id="getCodeByType" parameterType="string" resultType="com.netmarch.monitorcenter.bean.Group">
+        SELECT * FROM GROUPS where 1 = 1  AND type = #{type}
+    </select>
+
+    <select id="listAllType" resultType="string">
+        SELECT type FROM  GROUPS
+    </select>
+
+    <insert id="saveGroup" parameterType="com.netmarch.monitorcenter.bean.Group">
+        INSERT INTO GROUPS(name,code,type) values(#{name},#{code},#{type});
+    </insert>
+
+    <select id="getGroupByCode" resultType="com.netmarch.monitorcenter.bean.Group">
+        SELECT * FROM GROUPS WHERE code = #{code}
+    </select>
+
+    <select id="getGroupById" resultType="com.netmarch.monitorcenter.bean.Group">
+        SELECT * FROM GROUPS WHERE id = #{id}
+    </select>
+
+    <update id="updateGroup" parameterType="com.netmarch.monitorcenter.bean.Group">
+        UPDATE GROUPS SET name = #{name},code = #{code} WHERE id = #{id}
+    </update>
+
+    <select id="countServerInfoByCode" resultType="int">
+        SELECT COUNT(1) from server_info WHERE group_code = #{code}
+    </select>
+
+    <select id="countServerScriptByCode" resultType="int">
+        SELECT COUNT(1) FROM server_script WHERE group_id = #{code}
+    </select>
+
+    <delete id="deleteGroup">
+        DELETE FROM GROUPS WHERE id = #{id}
+    </delete>
+</mapper>

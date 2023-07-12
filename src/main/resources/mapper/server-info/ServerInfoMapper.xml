@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netmarch.monitorcenter.mapper.ServerInfoMapper">
+    <select id="queryServerInfoByConditions" resultType="com.netmarch.monitorcenter.bean.ServerInfo">
+        select * from server_info
+        <where>
+            <if test="ipAddress != null and ipAddress != ''">
+                ip_address like concat('%'+ #{ipAddress} +'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="groupCode != null and groupCode != ''">
+                and group_code = #{groupCode}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateServerInfo">
+        update server_info set
+        link_port = #{linkPort},
+        user_name = #{userName},
+        pwd = #{pwd},
+        group_code = #{groupCode}
+        <if test="description != null and description != ''">
+            , description = #{description}
+        </if>
+        where id = #{id}
+    </update>
+</mapper>
+        <!-- @Author : Administrator-->
+        <!-- @Date : 2018/12/12 --> 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}" media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layer/layer.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+    <script th:src="@{/web/serverScript/add.js}"></script>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">脚本管理</li>
+    </ul>
+    <div class="layui-tab-content">
+
+        <div style="padding: 1px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">上传脚本(<b>备注：带有<span style="color: red">*</span>号为必填项</b>)</div>
+                        <div class="layui-card-body">
+
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form layui-form-pane" id="form" enctype="multipart/form-data">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>脚本名称</label>
+                                        <div class="layui-input-block">
+
+
+
+
+
+
+
+                                            <input type="text" name="scriptName" id="scriptName"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>分组</label>
+                                        <div class="layui-input-block">
+                                            <select id="groupId" name="groupId">
+                                                <option th:each="group:${groups}" th:value="${group.code}" th:text="${group.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"><span style="color: red">*</span>脚本文件</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" id="fileName"
+                                                   autocomplete="off" class="layui-input" readonly="readonly">
+                                            <input type="file" name="scriptFile" id="scriptFile"
+                                                   style="display: none" onchange="tbyoung.fileChange(this)">
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <button type="button" class="layui-btn layui-btn-normal" onclick="tbyoung.chooseFile()">选择文件</button>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">备注</label>
+                                        <div class="layui-input-block">
+                                            <input name="remark" id="remark" class="layui-input"/>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button type="button" class="layui-btn" lay-submit="" lay-filter="demo2" onclick="tbyoung.submit()">保存</button>
+                                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                        <button type="button" class="layui-btn layui-btn-primary" onclick="tbyoung.fh()">返回</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+</html>

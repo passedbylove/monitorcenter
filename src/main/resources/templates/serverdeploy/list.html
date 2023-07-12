@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>服务部署</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/bootstrap-3.3.7/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}"  media="all">
+    <link rel="stylesheet" th:href="@{/css/iconfont.css?t=1525771196163}"  media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/bootstrap-3.3.7/dist/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <script th:src="@{/moment/moment.min.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+    <style type="text/css">
+        .layui-container-margin {
+            margin: 0 0;
+        }
+        .float-right {
+            float: right;
+        }
+        .search-container{
+            margin: 10px 0 0;
+            background: #f2f2f2;
+            padding: 8px 10px;
+        }
+        .search-container-border {
+            border-width: 1px;
+            border-style: solid;
+            border-color: #e6e6e6;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">服务部署发布</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div style="padding: 1px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <div class="layui-row">
+                                <div class="layui-col-xs12">
+                                    <div class="grid-demo grid-demo-bg1">服务部署发布</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-tab-item layui-show">
+                                <div class="layui-row search-container search-container-border">
+                                    <div class="layui-col-md6">
+                                        <button id="add_btn" class="layui-btn">新增</button>
+                                        <button class="layui-btn" data-type="reload"  id="search_btn" onclick="javascript:location.reload();">刷新</button>
+                                    </div>
+                                    <div class="layui-col-md6">
+                                        <!--<div class="float-right">-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <div class="layui-row">
+                                    <div class="layui-col-md12">
+                                        <table id="table" class="layui-table" lay-filter="table"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<div id="update_content_wrapper" style="display:none">
+    <div id="update_content">
+        <form class="layui-form" action="" method="post">
+            <div id="gz_modify" class="layui-form-item layui-form-pane">
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="oper-col">
+    {{#  if(d.pid != -1){ }}
+    <span data-json='{{ toJSON(d) }}' event="row_click">
+    <a class="layui-btn layui-btn-sm layui-bg-black" title="先执行卸载操作，再上传文件运行部署脚本" data-handle="redeploy">
+        重置
+    </a>
+    <a class="layui-btn layui-btn-sm layui-bg-green" title="先执行卸载脚本，再上传旧版本文件运行部署脚本" data-handle="rollback">
+        回退
+    </a>
+    <a class="layui-btn layui-btn-sm layui-bg-green" title="上传新版本文件运行部署脚本" data-handle="update">
+        更新
+    </a>
+    <a class="layui-btn layui-btn-sm layui-bg-orange" title="卸载,未指定脚本默认删除安装路径下的文件"  data-handle="uninstall">
+        卸载
+    </a>
+    <a class="layui-btn layui-btn-sm layui-bg-red" title="删除"  data-handle="remove" >
+        删除
+    </a>
+    </span>
+    {{#  } }}
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var treeJson = JSON.parse([[${treeJson}]]);
+    console.log(treeJson);
+    /*]]>*/
+</script>
+<script>
+    function toJSON(d) {
+       // return JSON.stringify(d).replace(new RegExp("\"",'g'),"&quot");
+       return JSON.stringify(d);
+    }
+</script>
+<script th:src="@{/web/module/common.js}" charset="utf-8"></script>
+<script th:src="@{/web/serverdeploy/list.js}"></script>
+</html>

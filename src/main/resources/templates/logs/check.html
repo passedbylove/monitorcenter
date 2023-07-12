@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" th:href="@{/style/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css?t=1525771196163}" media="all">
+    <script th:src="@{/jquery/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layer/layer.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js?t=1525771196163}" charset="utf-8"></script>
+    <script th:src="@{/js/verification.js}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/html5shiv/html5.min.js}"></script>
+    <script th:src="@{/respond.js/respond.min.js}"></script>
+    <![endif]-->
+    <script th:src="@{/web/logs/check.js}"></script>
+
+</head>
+<body>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">操作日志管理</li>
+    </ul>
+    <div class="layui-tab-content">
+
+        <div style="padding: 1px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form layui-form-pane" id="form"  th:object="${logs}">
+                                    日志详细信息
+                                    <hr>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">操作模块</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="module" id="module" th:value="*{module}"
+                                                   autocomplete="off" class="layui-input" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">操作动作</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="action" id="action" th:value="*{action}"
+                                                   readonly="readonly" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label">操作内容</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="detail" id="detail" th:text="*{detail}" class="layui-textarea" readonly="readonly"></textarea>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item  layui-form-text">
+                                        <label class="layui-form-label">操作结果</label>
+                                        <div class="layui-input-block">
+                                            <textarea name="result" id="result" th:text="*{result}" class="layui-textarea" readonly="readonly"></textarea>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">操作ip</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="action" id="action" th:value="*{ip}"
+                                                   readonly="readonly" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">执行时间</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" readonly="readonly" name="executeTime" id="executeTime" th:value="*{#dates.format(executeTime,'yyyy-MM-dd HH:mm:ss')}"
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <hr>
+                                    <div class="layui-form-item">
+                                        <button type="button" class="layui-btn layui-btn-primary"
+                                                onclick="tbyoung.fh()">返回
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
